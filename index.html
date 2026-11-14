@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Replaced by `flutter build web --base-href …` (GitHub Pages serves it under /lynn-karkar-releases/). -->
+  <base href="/lynn-karkar-releases/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Karkar & Lynn: our little world">
+  <meta name="theme-color" content="#F2456F">
+
+  <!-- iPhone: "Add to Home Screen" opens full screen with this name and icon. -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Karkar & Lynn">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Karkar & Lynn</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* Shown while the app loads (Flutter draws over it). */
+    html, body { margin: 0; height: 100%; }
+    body {
+      background: linear-gradient(135deg, #FFE4EF 0%, #F8DDF3 50%, #E6DCFF 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    #splash {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #4A2545; gap: 10px;
+    }
+    #splash img { width: 120px; height: 120px; border-radius: 28px; box-shadow: 0 12px 30px rgba(217, 74, 134, .25); }
+    #splash .name { font-size: 26px; font-weight: 700; }
+    #splash .hint { font-size: 14px; color: #85627F; animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .4; } }
+  </style>
+</head>
+<body>
+  <div id="splash">
+    <img src="icons/Icon-192.png" alt="">
+    <div class="name">Karkar &amp; Lynn</div>
+    <div class="hint">opening our little world…</div>
+  </div>
+  <!-- Push notifications helper (lib/push/web_push_js.dart calls window.lynnKarkarPush). -->
+  <script src="push.js"></script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
