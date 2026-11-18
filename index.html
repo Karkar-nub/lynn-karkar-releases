@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Replaced by `flutter build web --base-href …` (GitHub Pages serves it under /lynn-karkar-releases/). -->
+  <base href="/lynn-karkar-releases/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Karkar & Lynn: our little world">
+  <meta name="theme-color" content="#F2456F">
+
+  <!-- iPhone: "Add to Home Screen" opens full screen with this name and icon. -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Karkar & Lynn">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Karkar & Lynn</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* Shown while the app loads (Flutter draws over it). */
+    html, body { margin: 0; height: 100%; }
+    body {
+      background: linear-gradient(135deg, #FFE4EF 0%, #F8DDF3 50%, #E6DCFF 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    #splash {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #4A2545; gap: 10px;
+    }
+    #splash img { width: 120px; height: 120px; border-radius: 28px; box-shadow: 0 12px 30px rgba(217, 74, 134, .25); }
+    #splash .name { font-size: 26px; font-weight: 700; }
+    #splash .hint { font-size: 14px; color: #85627F; animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .4; } }
+    body.lk-night { background: linear-gradient(135deg, #120C2C 0%, #231442 50%, #3C1C50 100%); }
+
+    /* The moving background behind the Us tab (web/live_bg.js). Only transform and opacity are
+       animated, so the browser does it on the graphics chip without redrawing anything. */
+    #lk-bg {
+      position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(255, 182, 207, .55), rgba(255, 182, 207, 0) 46vmin),
+        radial-gradient(circle at 95% 35%, rgba(203, 184, 255, .50), rgba(203, 184, 255, 0) 44vmin),
+        radial-gradient(circle at 25% 92%, rgba(255, 208, 192, .45), rgba(255, 208, 192, 0) 50vmin),
+        linear-gradient(135deg, #FFE4EF 0%, #F8DDF3 50%, #E6DCFF 100%);
+    }
+    #lk-bg.lk-night {
+      background:
+        radial-gradient(circle at 15% 12%, rgba(242, 69, 111, .22), rgba(242, 69, 111, 0) 52vmin),
+        radial-gradient(circle at 92% 40%, rgba(142, 91, 255, .28), rgba(142, 91, 255, 0) 50vmin),
+        radial-gradient(circle at 30% 95%, rgba(74, 107, 255, .16), rgba(74, 107, 255, 0) 56vmin),
+        linear-gradient(135deg, #120C2C 0%, #231442 50%, #3C1C50 100%);
+    }
+    #lk-bg.lk-paused * { animation-play-state: paused !important; }
+    .lk-layer { position: absolute; inset: 0; }
+    .lk-heart {
+      position: absolute; bottom: -40px; opacity: 0; background: center / contain no-repeat;
+      will-change: transform, opacity; animation: lk-rise linear infinite;
+    }
+    @keyframes lk-rise {
+      0% { transform: translate3d(0, 0, 0) rotate(-10deg); opacity: 0; }
+      12% { opacity: var(--o); }
+      50% { transform: translate3d(var(--sway), -60vh, 0) rotate(10deg); }
+      85% { opacity: var(--o); }
+      100% { transform: translate3d(0, -118vh, 0) rotate(-10deg); opacity: 0; }
+    }
+    .lk-bokeh {
+      position: absolute; border-radius: 50%; will-change: transform, opacity;
+      animation: lk-drift ease-in-out infinite alternate;
+    }
+    @keyframes lk-drift {
+      from { transform: translate3d(0, 0, 0) scale(1); opacity: var(--o); }
+      to { transform: translate3d(var(--dx), var(--dy), 0) scale(1.3); opacity: calc(var(--o) * .4); }
+    }
+    .lk-twinkle {
+      position: absolute; opacity: 0; background: center / contain no-repeat;
+      will-change: transform, opacity; animation: lk-twinkle ease-in-out infinite;
+    }
+    @keyframes lk-twinkle {
+      0%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); }
+      50% { opacity: var(--o); transform: scale(1) rotate(45deg); }
+    }
+    .lk-fall { position: absolute; top: -30px; will-change: transform; animation: lk-fall linear infinite; }
+    @keyframes lk-fall {
+      0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      50% { transform: translate3d(var(--sway), 56vh, 0) rotate(calc(var(--spin) * .5)); }
+      100% { transform: translate3d(0, 112vh, 0) rotate(var(--spin)); }
+    }
+    .lk-flake { border-radius: 50%; background: radial-gradient(circle, #FFFFFF 0%, rgba(255, 255, 255, .85) 40%, rgba(255, 255, 255, 0) 72%); }
+    .lk-petal { border-radius: 85% 0 85% 0; background: linear-gradient(135deg, #FFE3EB, #FF9BBB); opacity: .9; }
+    .lk-rain { background: center / contain no-repeat; opacity: .8; }
+    .lk-boom {
+      position: absolute; width: 6px; height: 6px; border-radius: 50%;
+      animation: lk-boom 1.5s cubic-bezier(.15, .7, .3, 1) forwards;
+    }
+    @keyframes lk-boom {
+      0% { transform: translate3d(0, 0, 0) scale(1.2); opacity: 1; }
+      65% { opacity: 1; }
+      100% { transform: translate3d(var(--dx), var(--dy), 0) scale(.3); opacity: 0; }
+    }
+    .lk-float {
+      position: absolute; bottom: -70px; line-height: 1; opacity: 0;
+      will-change: transform, opacity; animation: lk-floatup ease-out forwards;
+    }
+    @keyframes lk-floatup {
+      0% { transform: translate3d(0, 0, 0) scale(.5); opacity: 0; }
+      10% { transform: translate3d(0, -10vh, 0) scale(1); opacity: 1; }
+      50% { transform: translate3d(var(--sway), -58vh, 0) scale(1.05); }
+      85% { opacity: .9; }
+      100% { transform: translate3d(calc(var(--sway) * -.5), -118vh, 0) scale(.9); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #lk-bg .lk-layer { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Moving background, seen through the Us tab (web/live_bg.js). -->
+  <div id="lk-bg" aria-hidden="true"></div>
+  <div id="splash">
+    <img src="icons/Icon-192.png" alt="">
+    <div class="name">Karkar &amp; Lynn</div>
+    <div class="hint">opening our little world…</div>
+  </div>
+  <!-- Push notifications helper (lib/push/web_push_js.dart calls window.lynnKarkarPush). -->
+  <script src="push.js"></script>
+  <!-- The Us tab's moving background (lib/widgets/live_scene_js.dart calls window.lynnKarkarBg). -->
+  <script src="live_bg.js"></script>
+  <!-- The in-app camera's zoom crops the shot (lib/memories/camera_zoom_js.dart calls window.lynnKarkarPhoto). -->
+  <script src="photo_tools.js"></script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
