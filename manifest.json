@@ -1,0 +1,36 @@
+{
+    "name": "Karkar & Lynn",
+    "short_name": "Karkar & Lynn",
+    "start_url": ".",
+    "scope": ".",
+    "display": "standalone",
+    "background_color": "#FFE4EC",
+    "theme_color": "#F2456F",
+    "description": "Our little world",
+    "orientation": "any",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
